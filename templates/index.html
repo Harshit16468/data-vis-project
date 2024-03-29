@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CO2 Emissions Visualization</title>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .country-option {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">CO2 Emissions Visualization</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="country">Select a country:</label>
+                    <select id="country" class="form-control">
+                        {% for country in countries %}
+                            <option value="{{ country.code }}" class="country-option">
+                                {{ country.flag }} {{ country.name }} ({{ country.facts }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div id="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update scatter plot based on selected country
+        function updatePlot(selectedCountry) {
+            var selectedOption = document.querySelector('option[value="' + selectedCountry + '"]');
+            var countryName = selectedOption.textContent.trim().replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ''); // Remove flag characters
+            var countryFacts = selectedOption.getAttribute('data-facts');
+
+            fetch('/get_data', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'country': selectedCountry
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                var years = data.years;
+                var values = data.values;
+
+                var trace = {
+                    x: years,
+                    y: values,
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: countryName
+                };
+
+                var layout = {
+                    title: 'CO2 Emissions Across Years',
+                    xaxis: {
+                        title: 'Year'
+                    },
+                    yaxis: {
+                        title: 'CO2 Emissions (gigagram / a)'
+                    }
+                };
+
+                Plotly.newPlot('chart', [trace], layout);
+            });
+        }
+
+        // Event listener for dropdown change
+        document.getElementById('country').addEventListener('change', function() {
+            var selectedCountry = this.value;
+            updatePlot(selectedCountry);
+        });
+
+        // Initialize plot with the first country
+        updatePlot(document.getElementById('country').value);
+    </script>
+</body>
+</html>

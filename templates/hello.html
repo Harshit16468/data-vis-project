@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four Plots</title>
+    <!-- Load Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        div {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        #plot1, #plot2, #plot3, #plot4 {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Temperature (Colored)</h2>
+        <div id="plot1">
+            {{ plot1_div|safe }}
+        </div>
+    </div>
+    <div>
+        <h2>Rainfall (Colored)</h2>
+        <div id="plot2">
+            {{ plot2_div|safe }}
+        </div>
+    </div>
+    <div>
+        <h2>Temperature (Grayscale)</h2>
+        <div id="plot3">
+            {{ plot3_div|safe }}
+        </div>
+    </div>
+    <div>
+        <h2>Rainfall (Grayscale)</h2>
+        <div id="plot4">
+            {{ plot4_div|safe }}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DV-Project</title>
+	<link rel="stylesheet" type="text/css" href="../static/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+</head>
+<body>
+
+<header>
+	<div class="header_menu">
+		<div class="menu_list">
+			<ul>
+				<li><a href="https://www.un.org/en/climatechange/what-is-climate-change/" >What is climate change?</a></li>
+
+				<li><a href="https://drive.google.com/drive/folders/1uMSxAQEmgbepQPsq2DP3BsnUb3hXK-ra">Video</a></li>
+				<li><a href="https://drive.google.com/file/d/1wRYtW4nd-ioFH1nhVAVPKL92TgrjqUqn/view?usp=drive_link">Report</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="header_content">
+        <h2>Data Visualisation S'24</h2>
+        <h1>Climate Change</h1>
+        <form method="POST" action="{{ url_for('watch_temperature_video') }}">
+			<input type="hidden" name="video_url" value="temp.html">
+			<button type="submit">Watch Temperature Video</button>
+		</form>
+		<form id="seaLevelForm" method="POST" action="{{ url_for('watch_sea_level_video') }}">
+			<input type="hidden" name="video_url" value="sea_level.html">
+			<button type="submit">Watch Sea Level Rise Video</button>
+		</form>
+		<form id="watchChartForm" action="/render_chart_html" method="POST">
+			<input type="hidden" name="template_name" value="chart.html">
+			<button type="submit">Countrywise CO2 Emmission</button>
+		</form>
+		<form id="watchChartForm" action="/extent" method="POST">
+			<input type="hidden" name="template_name" value="chart.html">
+			<button type="submit">Extent of Ice and Temperature vs Years</button>
+		</form>
+		<form id="seaLevelForm" method="POST" action="{{ url_for('heat') }}">
+			<input type="hidden" name="video_url" value="heat.html">
+			<button type="submit">Heat Map</button>
+		</form>
+		<form id="india-area" method="POST" action="/india-area">
+			<input type="hidden" name="template_name" value="hello.html">
+			<button type="submit">Area Map For India</button>
+		</form>
+    </div>
+</header>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extent and Temperature vs Years</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
+
+    <script>
+        var chartData = {{ chart_data|safe }};
+
+        // Create plotly charts for extent and temperature
+        var extentChart = document.createElement('div');
+        var temperatureChart = document.createElement('div');
+        extentChart.id = 'extent-chart';
+        temperatureChart.id = 'temperature-chart';
+        document.getElementById('chart').appendChild(extentChart);
+        document.getElementById('chart').appendChild(temperatureChart);
+
+        // Initialize Plotly charts
+        Plotly.newPlot('extent-chart', [chartData.data[0]], chartData.layout[0]).then(function(extentGd) {
+            Plotly.newPlot('temperature-chart', [chartData.data[1]], chartData.layout[1]).then(function(temperatureGd) {
+                // Add event listener for brushing on extent chart
+                extentGd.on('plotly_relayout', function(eventData) {
+                    if (eventData["xaxis.range[0]"] !== undefined && eventData["xaxis.range[1]"] !== undefined) {
+                        var xRange = [eventData["xaxis.range[0]"], eventData["xaxis.range[1]"]];
+                        Plotly.relayout('temperature-chart', 'xaxis.range', xRange);
+                    }
+                });
+
+                // Add event listener for brushing on temperature chart
+                temperatureGd.on('plotly_relayout', function(eventData) {
+                    if (eventData["xaxis.range[0]"] !== undefined && eventData["xaxis.range[1]"] !== undefined) {
+                        var xRange = [eventData["xaxis.range[0]"], eventData["xaxis.range[1]"]];
+                        Plotly.relayout('extent-chart', 'xaxis.range', xRange);
+                    }
+                });
+
+                // Add event listener for double-clicking to zoom out
+                extentGd.on('plotly_doubleclick', function() {
+                    Plotly.relayout('extent-chart', 'xaxis.autorange', true);
+                    Plotly.relayout('temperature-chart', 'xaxis.autorange', true);
+                });
+
+                temperatureGd.on('plotly_doubleclick', function() {
+                    Plotly.relayout('extent-chart', 'xaxis.autorange', true);
+                    Plotly.relayout('temperature-chart', 'xaxis.autorange', true);
+                });
+
+                // Add event listener for hover on extent chart
+                extentGd.on('plotly_hover', function(eventData) {
+                    var points = eventData.points;
+                    var xValue = points[0].x;
+                    // Highlight corresponding point in temperature chart
+                    var temperaturePoints = [];
+                    for (var i = 0; i < points.length; i++) {
+                        temperaturePoints.push({
+                            curveNumber: 0, // Index of the trace in the temperature chart
+                            pointNumber: points[i].pointNumber, // Point number in the trace
+                            x: xValue, // Set x-value to synchronize hover
+                            y: points[i].y, // Set y-value
+                            data: points[i].data, // Data associated with the point
+                        });
+                    }
+                    Plotly.Fx.hover('temperature-chart', temperaturePoints);
+                });
+
+                // Add event listener for hover out on extent chart
+                extentGd.on('plotly_unhover', function() {
+                    Plotly.Fx.unhover('temperature-chart');
+                });
+
+                // Add event listener for hover on temperature chart
+                temperatureGd.on('plotly_hover', function(eventData) {
+                    var points = eventData.points;
+                    var xValue = points[0].x;
+                    // Highlight corresponding point in extent chart
+                    var extentPoints = [];
+                    for (var i = 0; i < points.length; i++) {
+                        extentPoints.push({
+                            curveNumber: 0, // Index of the trace in the extent chart
+                            pointNumber: points[i].pointNumber, // Point number in the trace
+                            x: xValue, // Set x-value to synchronize hover
+                            y: points[i].y, // Set y-value
+                            data: points[i].data, // Data associated with the point
+                        });
+                    }
+                    Plotly.Fx.hover('extent-chart', extentPoints);
+                });
+
+                // Add event listener for hover out on temperature chart
+                temperatureGd.on('plotly_unhover', function() {
+                    Plotly.Fx.unhover('extent-chart');
+                });
+
+                // Update y-axis titles and trace color
+                Plotly.restyle('extent-chart', 'yaxis.title', 'Extent');
+                Plotly.restyle('temperature-chart', {'yaxis.title.text': 'Temperature', 'line.color': 'red'});
+                // Update titles for each plot
+                Plotly.relayout('extent-chart', 'title', 'Extent of Ice vs Years');
+                Plotly.relayout('temperature-chart', 'title', 'Temperature vs Years');
+
+            });
+        });
+    </script>
+</body>
+</html>

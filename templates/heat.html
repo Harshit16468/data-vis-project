@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Two Videos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    video {
+        width: 100%;
+        border: 10px solid black;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Two Videos Example</h1>
+
+    <div>
+        <h2>Video 1</h2>
+        <video controls width="480" height="270">
+            <source src="../static/co2_heat.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div>
+        <h2>Video 2</h2>
+        <video controls style="max-width: 100%; border: 10px solid black;">
+            <source src="../static/co2_heat_gray.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+</body>
+</html>
+
