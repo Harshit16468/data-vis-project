@@ -4,3 +4,4 @@ plotly
 pygame
 numpy
 tqdm
+gunicorn
