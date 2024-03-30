@@ -1,0 +1,6 @@
+flask
+pandas
+plotly
+pygame
+numpy
+tqdm
