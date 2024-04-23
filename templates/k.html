@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statewise Greenhouse Gas Emission Levels</title>
+    <style>
+        /* CSS for styling the info box */
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chart {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        #infoBox {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #infoBox p {
+            margin: 0 0 10px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Statewise Greenhouse Gas Emission Levels</h1>
+    <!-- Create a slider for selecting years -->
+    <input type="range" id="yearSlider" min="2019" max="2023" value="2019">
+    <span id="selectedYear">2019</span>
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v2.min.js"></script>
+
+    <!-- Create a container for the chart -->
+    <div id="container">
+        <!-- Create an element for the chart -->
+        <div id="chart"></div>
+
+        <!-- Info box for units and description -->
+        <div id="infoBox">
+            <h2>Description</h2>
+            <p><strong>Note:</strong> The values of each state are in units of KtCO2 (kilotons of carbon dioxide).</p>
+            <p>"ktCO2" is a unit used to measure carbon dioxide emissions, where "kt" stands for kilotons, which means thousands of metric tons. This unit is often used to quantify the amount of carbon dioxide released into the atmosphere as a result of various activities, such as industrial processes, transportation, energy production, and deforestation.</p>
+            <p>To put it simply, if an activity is said to emit 10 ktCO2, it means that activity is responsible for emitting 10,000 metric tons of carbon dioxide into the atmosphere.</p>
+            <p>Tracking emissions in kilotons of CO2 is important for understanding and managing climate change, as carbon dioxide is a major contributor to global warming. Governments, organizations, and researchers use this unit to monitor trends, set emission reduction targets, and assess the effectiveness of policies aimed at mitigating climate change.</p>
+            <h2>Usefulness of Statewise Greenhouse Gas Emission Data</h2>
+            <p>The statewise greenhouse gas emission data provides valuable insights into the contribution of each state to overall carbon dioxide emissions. This information is crucial for policymakers, environmental organizations, and researchers in several ways:</p>
+            <ul>
+                <li>Policy formulation: Helps governments in developing targeted policies and regulations to reduce emissions and combat climate change.</li>
+                <li>Evaluation of mitigation efforts: Allows assessment of the effectiveness of existing emission reduction measures and identification of areas needing further action.</li>
+                <li>Resource allocation: Assists in allocating resources for climate change mitigation and adaptation strategies based on regional emission levels and trends.</li>
+                <li>Public awareness: Raises awareness among citizens about the environmental impact of different activities and encourages sustainable practices.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- JavaScript code for the chart -->
+    <script>
+        // Load the CSV data
+        d3.csv("../static/preprocessed_data.csv").then(function(data) {
+            updateChart(data, "2019"); // Initial chart update with data for 2019
+
+            // Function to update the chart based on selected year
+            function updateChart(data, selectedYear) {
+                // Filter the data for the selected year
+                const filteredData = data.filter(d => d.Year === selectedYear);
+
+                // Aggregate the data by state and calculate the total value for each state
+                const aggregatedData = d3.rollup(filteredData, v => d3.sum(v, d => +d.Value), d => d.State);
+
+                // Convert aggregated data to the bubble chart format
+                const bubbleChartData = Array.from(aggregatedData, ([state, value]) => ({ id: state, value }));
+
+                // Bubble chart template code
+                const width = 928;
+                const height = width;
+                const margin = 1;
+                const color = d3.scaleOrdinal(d3.schemeTableau10);
+                const format = d3.format(",d");
+                const pack = d3.pack().size([width - margin * 2, height - margin * 2]).padding(3);
+                const root = pack(d3.hierarchy({ children: bubbleChartData }).sum(d => d.value));
+                const svg = d3.create("svg").attr("width", width).attr("height", height)
+                    .attr("viewBox", [-margin, -margin, width, height])
+                    .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;")
+                    .attr("text-anchor", "middle");
+                const node = svg.append("g").selectAll().data(root.leaves()).join("g").attr("transform", d => `translate(${d.x},${d.y})`);
+                node.append("title").text(d => `${d.data.id}\n${format(d.value)}`);
+                node.append("circle").attr("fill-opacity", 0.7).attr("fill", d => color(d.data.id)).attr("r", d => d.r * 1);
+                const text = node.append("text").attr("clip-path", d => `circle(${d.r})`);
+                text.selectAll().data(d => d.data.id.split(" ")).join("tspan").attr("x", 0)
+                    .attr("y", (d, i, nodes) => `${i - nodes.length / 2 + 0.35}em`).text(d => d);
+                text.append("tspan").attr("x", 0).attr("y", d => `${d.data.id.split(" ").length / 2 + 0.35}em`)
+                    .attr("fill-opacity", 0.7).text(d => format(d.value));
+
+                // Remove any existing SVG elements before appending new ones
+                document.getElementById("chart").innerHTML = "";
+                // Append the SVG to the chart div
+                document.getElementById("chart").appendChild(svg.node());
+
+                // Update selected year text
+                document.getElementById("selectedYear").textContent = selectedYear;
+            }
+
+            // Event listener for slider input
+            document.getElementById("yearSlider").addEventListener("input", function() {
+                const selectedYear = this.value;
+                updateChart(data, selectedYear);
+            });
+        });
+    </script>
+</body>
+
+</html>

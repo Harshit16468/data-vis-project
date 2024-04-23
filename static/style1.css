@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: url(bg.jpg) no-repeat;
+    background-size: cover;
+    /* Add a semi-transparent black overlay to increase contrast */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.info {
+    color: white; /* Change text color to white for better visibility */
+}
+
+/* Add more specific styles as needed */
+header {
+    position: relative;
+    top: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    position: relative;
+    color: #ffffff;
+    font-size: 20px;
+    text-decoration: none;
+    /* text-transform: uppercase; */
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+header .navigation a {
+    color: #9df42a;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 2px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+    margin-left: auto;
+}
+
+header .navigation a:not(:last-child) {
+    margin-right: 30px;
+}
+
+header .navigation a:hover {
+    background: #125e22;
+}
+.content {
+    max-width: 650px;
+    margin: 60px 100px;
+}
+
+.content .info h2 {
+    /* color: #a06b45; */
+    color: #dfdf7f;
+    font-size: 55px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 60px;
+    margin-bottom: 15px; /* Decrease the margin-bottom */
+}
+
+.content .info h3 {
+    /* color: #226A80; */
+    color: #dfdf7f;
+    font-size: 25px;
+    /* text-transform: uppercase; */
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 60px;
+    margin-bottom: 15px; /* Adjusted margin-bottom */
+}
+
+
+.content .info p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fefee1;
+    margin-bottom: 40px;
+}
+
+.content .info-btn {
+    color: #fff;
+    background: #3b96bf;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.content .info-btn:hover {
+    background: #0b4c66;
+}
+
+/* ------------VISUALISATION HTML----------------- */
+.visualization-buttons {
+    margin-top: 20px; /* Add some space between the paragraph and the buttons */
+}
+
+.vis-button {
+    display: block; /* Align buttons one below another */
+    color: #000000;
+    background: #e6e179;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-left: 300px;
+    margin-top: 0.5in;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Include transition for smoother hover effect */
+    margin-bottom: 10px; /* Add margin bottom for spacing between buttons */
+}
+
+
+.vis-button:hover {
+    background-color: #a26c44;
+    color: #fff;
+}

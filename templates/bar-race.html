@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<head>
+   <meta charset="utf-8">
+   <script src="https://d3js.org/d3.v5.min.js"></script>
+   <style>
+   text{
+      font-size: 16px;
+      font-family: Open Sans, sans-serif;
+   }
+    text.title{
+       font-size: 24px;
+       font-weight: 500;
+    }
+    text.subTitle{
+       font-weight: 500;
+       fill: #777777;
+    }
+    text.caption{
+       font-weight: 400;
+       font-size: 14px;
+       fill: #777777;
+    }
+    text.label{
+       font-weight: 600;
+    }
+
+    text.valueLabel{
+       font-weight: 300;
+    }
+
+    text.yearText{
+       font-size: 64px;
+       font-weight: 700;
+       opacity: 0.25;
+    }
+    .tick text {
+       fill: #777777;
+    }
+    .xAxis .tick:nth-child(2) text {
+       text-anchor: start;
+    }
+    .tick line {
+       shape-rendering: CrispEdges;
+       stroke: #dddddd;
+    }
+    .tick line.origin{
+       stroke: #aaaaaa;
+    }
+    path.domain{
+       display: none;
+    }
+    #infoBox {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #infoBox p {
+      margin: 0 0 10px;
+      line-height: 1.5;
+        }
+   </style>
+</head>
+<h1>Top 20 Country by natural disaster count</h1>
+<div id="infoBox">
+   <h2>Description</h2>
+   <p>This graph shows the top 20 countries which have the most number of natural disaster due to climate change recognised by the United Nations</p>
+   <h4>It shows data from the year 1980 to 2022 </h4>
+
+</div>
+</div>
+<div id="controls">
+   <button id="pauseButton">Pause</button>
+   <button id="playButton">Play</button>
+   <input type="range" min="1980" max="2022" value="1980" id="yearSlider">
+</div>
+<div class="tooltip" style="opacity: 0;"></div>
+
+<body>
+   <script>
+      // Feel free to change or delete any of the code you see in this editor!
+      var svg = d3.select("body").append("svg")
+   .attr("width", 960)
+   .attr("height", 600);
+
+
+
+
+var top_n = 20;
+var height = 600;
+var width = 960;
+
+const margin = {
+   top: 80,
+   right: 0,
+   bottom: 5,
+   left: 0
+};
+
+let barPadding = (height-(margin.bottom+margin.top))/(top_n*5);
+
+let title = svg.append('text')
+   .attr('class', 'title')
+   .attr('y', 24)
+
+
+let year = 1980;
+
+d3.csv('../static/total_disasters_per_country_cumulative.csv').then(function(data) {
+   //if (error) throw error;
+
+   console.log(data);
+   data.forEach(d => {
+         d.colour = d3.hsl(Math.random()*360,0.75,0.75)
+   });
+   
+   let yearSlice = data.filter(d=>!isNaN(d[year.toString()]))
+      .sort((a,b) => b[year.toString()] - a[year.toString()])
+      .slice(0, top_n);
+
+   yearSlice.forEach((d,i) => d.rank = i);
+
+   console.log('yearSlice: ', yearSlice)
+   console.log('year: ', year.toString());
+   let max=yearSlice[0][ year.toString()];
+   console.log(max);
+   let x = d3.scaleLinear()
+      .domain([0, max])
+      .range([margin.left, width-margin.right-65]);
+console.log(x.domain());
+   let y = d3.scaleLinear()
+      .domain([top_n, 0])
+      .range([height-margin.bottom, margin.top]);
+
+   let xAxis = d3.axisTop()
+      .scale(x)
+      .ticks(width > 500 ? 5:2)
+      .tickSize(-(height-margin.top-margin.bottom))
+      .tickFormat(d => d3.format(',')(d));
+
+   svg.append('g')
+      .attr('class', 'axis xAxis')
+      .attr('transform', `translate(0, ${margin.top})`)
+      .call(xAxis)
+      .selectAll('.tick line')
+      .classed('origin', d => d == 0);
+      svg.selectAll('rect.bar')
+      .data(yearSlice, d => d.Country)
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', x(0)+1)
+      .attr('width', function(d) {
+         if(isNaN(x(d[year.toString()]))){
+            console.log("Nan detected");
+           console.log(x(d[year.toString()]));
+
+         }
+         return x(d[year.toString()]);
+     })
+      .attr('y', d => y(d.rank)+5)
+      .attr('height', y(1)-y(0)-barPadding)
+      .style('fill', d => d.colour)
+      .text(d => `${d.value}\n${d.name}`);
+
+      svg.selectAll('text.label')
+      .data(yearSlice, d => d.Country)
+      .enter()
+      .append('text')
+      .attr('class', 'label')
+      .attr('x', function(d) {
+         if(isNaN(x(d[year.toString()]))){
+            console.log("Nan detected");
+            console.log(x(d[year.toString()]));
+            
+         }
+         return x(d[year.toString()]);
+      })
+     
+      .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
+      .style('text-anchor', 'end')
+      .html(d => d.Country);
+      
+      svg.selectAll('text.valueLabel')
+      .data(yearSlice, d => d.Country)
+      .enter()
+      .append('text')
+      .attr('class', 'valueLabel')
+      .attr('x', function(d) {
+         if(isNaN(x(d[year.toString()]))){
+            console.log("Nan detected");
+           console.log(x(d[year.toString()]));
+         }
+         return x(d[year.toString()]);
+     })
+      .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
+      
+      let yearText = svg.append('text')
+      .attr('class', 'yearText')
+      .attr('x', width-margin.right)
+      .attr('y', height-25)
+      .style('text-anchor', 'end')
+      .html(~~year)
+      .call(halo, 10);
+      let ticker;
+      function runAnimation() {
+
+         ticker = setInterval(e => {
+
+            console.log(year.toString());
+               yearSlice = data.filter(d=>!isNaN(d[year.toString()]))
+               .sort((a,b) => b[year.toString()] - a[year.toString()])
+               .slice(0,top_n);
+      
+            yearSlice.forEach((d,i) => d.rank = i);
+      
+            console.log('IntervalYear: ', yearSlice);
+            console.log('IntervalYear: ', year);
+            max=yearSlice[0][ year.toString()];
+            x.domain([0, max]);
+            
+            svg.select('.xAxis')
+            .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .call(xAxis);
+               
+            let bars = svg.selectAll('.bar').data(yearSlice, d => d.Country);
+            bars
+            .enter()
+            .append('rect')
+            .attr('class', d => `bar ${d.Country.replace(/\s/g,'_')}`)
+            .attr('x', x(0)+1)
+            .attr( 'width', function(d) {
+               if(isNaN(x(d[year.toString()]))){
+                  console.log("Nan detected");
+                 console.log(x(d[year.toString()]));
+      
+               }
+               return x(d[year.toString()]);
+           })
+            .attr('y', d => y(top_n+1)+5)
+            .attr('height', y(1)-y(0)-barPadding)
+            .style('fill', d => d.colour)
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('y', d => y(d.rank)+5);
+            
+            bars
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('width', function(d) {
+               if(isNaN(x(d[year.toString()]))){
+                  console.log("Nan detected");
+                  console.log(x(d[year.toString()]));
+                  console.log(x.domain());
+      
+               }
+               return x(d[year.toString()]);
+           })
+            .attr('y', d => y(d.rank)+5);
+            
+            bars
+            .exit()
+            .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('width', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(top_n+1)+5)
+               .remove();
+               
+               let labels = svg.selectAll('.label')
+               .data(yearSlice, d => d.Country);
+               
+               labels
+               .enter()
+               .append('text')
+               .attr('class', 'label')
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(top_n+1)+5+((y(1)-y(0))/2))
+               .style('text-anchor', 'end')
+               .html(d => d.Country)    
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+               
+               
+               labels
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+      
+               labels
+               .exit()
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+         
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(top_n+1)+5)
+               .remove();
+               
+               
+               
+               let valueLabels = svg.selectAll('text.valueLabel').data(yearSlice, d => d.Country);
+      
+            valueLabels
+               .enter()
+               .append('text')
+               .attr('class', 'valueLabel')
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(top_n+1)+5)
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+      
+            valueLabels
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
+      
+      
+      
+            valueLabels
+               .exit()
+               .transition()
+               .duration(tickDuration)
+               .ease(d3.easeLinear)
+               .attr('x', function(d) {
+                  if(isNaN(x(d[year.toString()]))){
+                     console.log("Nan detected");
+                    console.log(x(d[year.toString()]));
+                    console.log(x.domain());
+                    console.log()
+      
+                  }
+                  return x(d[year.toString()]);
+              })
+               .attr('y', d => y(top_n+1)+5)
+               .remove();
+      
+            yearText.html(~~year);
+            svg.selectAll('.bar')
+            .on('mouseover', function(d) {
+              const value = d[year.toString()];
+              tooltip.transition().duration(200).style('opacity', 0.9);
+              tooltip.html(`Value: ${value}<br/>Country: ${d.name}`)
+                .style('left', (d3.event.pageX + 10) + 'px')
+                .style('top', (d3.event.pageY - 28) + 'px');
+            })
+            .on('mouseout', function(d) {
+              tooltip.transition().duration(500).style('opacity', 0);
+            });
+          
+            if(year == 2022) {
+               pause();
+
+            }
+            ;
+            year = ((+year) +1);
+            yearSlider.value = year; // Update slider value
+
+         },tickDuration);
+      }
+      var tickDuration = 1000;
+
+      const pauseButton = document.getElementById("pauseButton");
+const playButton = document.getElementById("playButton");
+const yearSlider = document.getElementById("yearSlider");
+
+playButton.disabled=false;
+pauseButton.disabled=true;
+// Add event listeners for the buttons
+function pause() {
+   console.log("dfgh")
+   playButton.disabled=false;
+   pauseButton.disabled=true;
+   yearSlider.disabled=false;
+   clearInterval(ticker); // stop the ticker if it's running
+}
+pauseButton.addEventListener("click",pause );
+
+playButton.addEventListener("click", function() {
+   console.log("fghhfdfs")
+   tickDuration=1000;
+   playButton.disabled=true;
+   pauseButton.disabled=false;
+   yearSlider.disabled=true;
+
+
+   runAnimation() // start the ticker
+});
+
+// Add event listener for the slider
+yearSlider.addEventListener("input", function() {
+   // Update year based on slider value
+   year = +this.value;
+   // Re-run the animation with the updated year
+   yearSlice = data.filter(d=>!isNaN(d[year.toString()]))
+   .sort((a,b) => b[year.toString()] - a[year.toString()])
+   .slice(0,top_n);
+
+yearSlice.forEach((d,i) => d.rank = i);
+
+console.log('IntervalYear: ', yearSlice);
+console.log('IntervalYear: ', year);
+max=yearSlice[0][ year.toString()];
+x.domain([0, max]);
+
+svg.select('.xAxis')
+.transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .call(xAxis);
+   
+let bars = svg.selectAll('.bar').data(yearSlice, d => d.Country);
+bars
+.enter()
+.append('rect')
+.attr('class', d => `bar ${d.Country.replace(/\s/g,'_')}`)
+.attr('x', x(0)+1)
+.attr( 'width', function(d) {
+   if(isNaN(x(d[year.toString()]))){
+      console.log("Nan detected");
+     console.log(x(d[year.toString()]));
+
+   }
+   return x(d[year.toString()]);
+})
+.attr('y', d => y(top_n+1)+5)
+.attr('height', y(1)-y(0)-barPadding)
+.style('fill', d => d.colour)
+.transition()
+.duration(tickDuration)
+.ease(d3.easeLinear)
+.attr('y', d => y(d.rank)+5);
+
+bars
+.transition()
+.duration(tickDuration)
+.ease(d3.easeLinear)
+.attr('width', function(d) {
+   if(isNaN(x(d[year.toString()]))){
+      console.log("Nan detected");
+      console.log(x(d[year.toString()]));
+      console.log(x.domain());
+
+   }
+   return x(d[year.toString()]);
+})
+.attr('y', d => y(d.rank)+5);
+
+bars
+.exit()
+.transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('width', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(top_n+1)+5)
+   .remove();
+   
+   let labels = svg.selectAll('.label')
+   .data(yearSlice, d => d.Country);
+   
+   labels
+   .enter()
+   .append('text')
+   .attr('class', 'label')
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(top_n+1)+5+((y(1)-y(0))/2))
+   .style('text-anchor', 'end')
+   .html(d => d.Country)    
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+   
+   
+   labels
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+
+   labels
+   .exit()
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(top_n+1)+5)
+   .remove();
+   
+   
+   
+   let valueLabels = svg.selectAll('text.valueLabel').data(yearSlice, d => d.Country);
+
+valueLabels
+   .enter()
+   .append('text')
+   .attr('class', 'valueLabel')
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(top_n+1)+5)
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1);
+
+valueLabels
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
+
+
+
+valueLabels
+   .exit()
+   .transition()
+   .duration(tickDuration)
+   .ease(d3.easeLinear)
+   .attr('x', function(d) {
+      if(isNaN(x(d[year.toString()]))){
+         console.log("Nan detected");
+        console.log(x(d[year.toString()]));
+        console.log(x.domain());
+        console.log()
+
+      }
+      return x(d[year.toString()]);
+  })
+   .attr('y', d => y(top_n+1)+5)
+   .remove();
+
+yearText.html(~~year);
+svg.selectAll('.bar')
+  .on('mouseover', function(d) {
+    const value = d[year.toString()];
+    tooltip.transition().duration(200).style('opacity', 0.9);
+    tooltip.html(`Value: ${value}<br/>Country: ${d.name}`)
+      .style('left', (d3.event.pageX + 10) + 'px')
+      .style('top', (d3.event.pageY - 28) + 'px');
+  })
+  .on('mouseout', function(d) {
+    tooltip.transition().duration(500).style('opacity', 0);
+  });
+
+});
+const tooltip = d3.select('body').append('div')
+  .attr('class', 'tooltip')
+  .style('opacity', 0);
+
+// Add event listeners to show/hide tooltip
+svg.selectAll('.bar')
+  .on('mouseover', function(d) {
+    const value = d[year.toString()];
+    tooltip.transition().duration(200).style('opacity', 0.9);
+    tooltip.html(`Value: ${value}<br/>Country: ${d.name}`)
+      .style('left', (d3.event.pageX + 10) + 'px')
+      .style('top', (d3.event.pageY - 28) + 'px');
+  })
+  .on('mouseout', function(d) {
+    tooltip.transition().duration(500).style('opacity', 0);
+  });
+
+
+      
+});
+
+const halo = function(text, strokeWidth) {
+   text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
+      .style('fill', '#ffffff')
+      .style('stroke','#ffffff')
+      .style('stroke-width', strokeWidth)
+      .style('stroke-linejoin', 'round')
+      .style('opacity', 1);
+
+}
+   
+
+   </script>
+</body>
+

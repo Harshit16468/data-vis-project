@@ -1,0 +1,187 @@
+Country,Country code,State,State code,State type,Year,Category,Subcategory,Variable,Unit,Value,YoY absolute change,YoY % change
+India,IND,Andaman and Nicobar,AN,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,62.89,,
+India,IND,Andaman and Nicobar,AN,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,89.69,26.8,42.61
+India,IND,Andaman and Nicobar,AN,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,68.19,-21.5,-23.97
+India,IND,Andaman and Nicobar,AN,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,125.49,57.3,84.03
+India,IND,Andaman and Nicobar,AN,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,234.18,108.69,86.61
+India,IND,Andhra Pradesh,AP,state,2019,Power sector emissions,Total,Total emissions,ktCO2,48429.72,,
+India,IND,Andhra Pradesh,AP,state,2020,Power sector emissions,Total,Total emissions,ktCO2,38549.88,-9879.84,-20.4
+India,IND,Andhra Pradesh,AP,state,2021,Power sector emissions,Total,Total emissions,ktCO2,46032.85,7482.97,19.41
+India,IND,Andhra Pradesh,AP,state,2022,Power sector emissions,Total,Total emissions,ktCO2,49845.18,3812.33,8.28
+India,IND,Andhra Pradesh,AP,state,2023,Power sector emissions,Total,Total emissions,ktCO2,57238.23,7393.05,14.83
+India,IND,Arunachal Pradesh,AR,state,2019,Power sector emissions,Total,Total emissions,ktCO2,39.63,,
+India,IND,Arunachal Pradesh,AR,state,2020,Power sector emissions,Total,Total emissions,ktCO2,76.86,37.23,93.94
+India,IND,Arunachal Pradesh,AR,state,2021,Power sector emissions,Total,Total emissions,ktCO2,97.58,20.72,26.96
+India,IND,Arunachal Pradesh,AR,state,2022,Power sector emissions,Total,Total emissions,ktCO2,117.16,19.58,20.07
+India,IND,Arunachal Pradesh,AR,state,2023,Power sector emissions,Total,Total emissions,ktCO2,103.06,-14.1,-12.03
+India,IND,Assam,AS,state,2019,Power sector emissions,Total,Total emissions,ktCO2,4424.69,,
+India,IND,Assam,AS,state,2020,Power sector emissions,Total,Total emissions,ktCO2,3853.22,-571.47,-12.92
+India,IND,Assam,AS,state,2021,Power sector emissions,Total,Total emissions,ktCO2,4883.91,1030.69,26.75
+India,IND,Assam,AS,state,2022,Power sector emissions,Total,Total emissions,ktCO2,5737.26,853.35,17.47
+India,IND,Assam,AS,state,2023,Power sector emissions,Total,Total emissions,ktCO2,5904.31,167.05,2.91
+India,IND,Bihar,BR,state,2019,Power sector emissions,Total,Total emissions,ktCO2,28764.23,,
+India,IND,Bihar,BR,state,2020,Power sector emissions,Total,Total emissions,ktCO2,26651.68,-2112.55,-7.34
+India,IND,Bihar,BR,state,2021,Power sector emissions,Total,Total emissions,ktCO2,33796.45,7144.77,26.81
+India,IND,Bihar,BR,state,2022,Power sector emissions,Total,Total emissions,ktCO2,44356.04,10559.59,31.24
+India,IND,Bihar,BR,state,2023,Power sector emissions,Total,Total emissions,ktCO2,47080.64,2724.6,6.14
+India,IND,Chandigarh,CH,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,0.58,,
+India,IND,Chandigarh,CH,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,0.47,-0.11,-18.97
+India,IND,Chandigarh,CH,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,0.71,0.24,51.06
+India,IND,Chandigarh,CH,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,0.58,-0.13,-18.31
+India,IND,Chandigarh,CH,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,0.65,0.07,12.07
+India,IND,Chhattisgarh,CT,state,2019,Power sector emissions,Total,Total emissions,ktCO2,93338.48,,
+India,IND,Chhattisgarh,CT,state,2020,Power sector emissions,Total,Total emissions,ktCO2,107403.18,14064.7,15.07
+India,IND,Chhattisgarh,CT,state,2021,Power sector emissions,Total,Total emissions,ktCO2,114441.14,7037.96,6.55
+India,IND,Chhattisgarh,CT,state,2022,Power sector emissions,Total,Total emissions,ktCO2,114498.64,57.5,0.05
+India,IND,Chhattisgarh,CT,state,2023,Power sector emissions,Total,Total emissions,ktCO2,132001.99,17503.35,15.29
+India,IND,Dadra and Nagar Haveli and Daman and Diu,DH,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,1.33,,
+India,IND,Dadra and Nagar Haveli and Daman and Diu,DH,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,3.17,1.84,138.35
+India,IND,Dadra and Nagar Haveli and Daman and Diu,DH,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,6.58,3.41,107.57
+India,IND,Dadra and Nagar Haveli and Daman and Diu,DH,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,3.8,-2.78,-42.25
+India,IND,Dadra and Nagar Haveli and Daman and Diu,DH,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,2.97,-0.83,-21.84
+India,IND,Delhi,DL,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,2799.72,,
+India,IND,Delhi,DL,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,2659.45,-140.27,-5.01
+India,IND,Delhi,DL,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,2522.83,-136.62,-5.14
+India,IND,Delhi,DL,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,2067.62,-455.21,-18.04
+India,IND,Delhi,DL,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,1775.15,-292.47,-14.15
+India,IND,Goa,GA,state,2019,Power sector emissions,Total,Total emissions,ktCO2,0.02,,
+India,IND,Goa,GA,state,2020,Power sector emissions,Total,Total emissions,ktCO2,0.07,0.05,250.0
+India,IND,Goa,GA,state,2021,Power sector emissions,Total,Total emissions,ktCO2,0.12,0.05,71.43
+India,IND,Goa,GA,state,2022,Power sector emissions,Total,Total emissions,ktCO2,0.94,0.82,683.33
+India,IND,Goa,GA,state,2023,Power sector emissions,Total,Total emissions,ktCO2,2.68,1.74,185.11
+India,IND,Gujarat,GJ,state,2019,Power sector emissions,Total,Total emissions,ktCO2,78023.87,,
+India,IND,Gujarat,GJ,state,2020,Power sector emissions,Total,Total emissions,ktCO2,73073.25,-4950.62,-6.35
+India,IND,Gujarat,GJ,state,2021,Power sector emissions,Total,Total emissions,ktCO2,52969.89,-20103.36,-27.51
+India,IND,Gujarat,GJ,state,2022,Power sector emissions,Total,Total emissions,ktCO2,46274.17,-6695.72,-12.64
+India,IND,Gujarat,GJ,state,2023,Power sector emissions,Total,Total emissions,ktCO2,59627.0,13352.83,28.86
+India,IND,Haryana,HR,state,2019,Power sector emissions,Total,Total emissions,ktCO2,15755.53,,
+India,IND,Haryana,HR,state,2020,Power sector emissions,Total,Total emissions,ktCO2,10152.74,-5602.79,-35.56
+India,IND,Haryana,HR,state,2021,Power sector emissions,Total,Total emissions,ktCO2,18259.48,8106.74,79.85
+India,IND,Haryana,HR,state,2022,Power sector emissions,Total,Total emissions,ktCO2,25973.86,7714.38,42.25
+India,IND,Haryana,HR,state,2023,Power sector emissions,Total,Total emissions,ktCO2,23900.77,-2073.09,-7.98
+India,IND,Himachal Pradesh,HP,state,2019,Power sector emissions,Total,Total emissions,ktCO2,1030.14,,
+India,IND,Himachal Pradesh,HP,state,2020,Power sector emissions,Total,Total emissions,ktCO2,978.43,-51.71,-5.02
+India,IND,Himachal Pradesh,HP,state,2021,Power sector emissions,Total,Total emissions,ktCO2,906.29,-72.14,-7.37
+India,IND,Himachal Pradesh,HP,state,2022,Power sector emissions,Total,Total emissions,ktCO2,1001.61,95.32,10.52
+India,IND,Himachal Pradesh,HP,state,2023,Power sector emissions,Total,Total emissions,ktCO2,940.13,-61.48,-6.14
+India,IND,India Total,IN,total,2019,Power sector emissions,Total,Total emissions,ktCO2,853374.5,,
+India,IND,India Total,IN,total,2020,Power sector emissions,Total,Total emissions,ktCO2,813949.31,-39425.19,-4.62
+India,IND,India Total,IN,total,2021,Power sector emissions,Total,Total emissions,ktCO2,911102.31,97153.0,11.94
+India,IND,India Total,IN,total,2022,Power sector emissions,Total,Total emissions,ktCO2,981474.6,70372.29,7.72
+India,IND,India Total,IN,total,2023,Power sector emissions,Total,Total emissions,ktCO2,1066112.4,84637.8,8.62
+India,IND,Jammu and Kashmir,JK,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,444.21,,
+India,IND,Jammu and Kashmir,JK,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,444.4,0.19,0.04
+India,IND,Jammu and Kashmir,JK,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,419.19,-25.21,-5.67
+India,IND,Jammu and Kashmir,JK,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,417.46,-1.73,-0.41
+India,IND,Jammu and Kashmir,JK,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,400.43,-17.03,-4.08
+India,IND,Jharkhand,JH,state,2019,Power sector emissions,Total,Total emissions,ktCO2,21492.5,,
+India,IND,Jharkhand,JH,state,2020,Power sector emissions,Total,Total emissions,ktCO2,21873.28,380.78,1.77
+India,IND,Jharkhand,JH,state,2021,Power sector emissions,Total,Total emissions,ktCO2,22972.71,1099.43,5.03
+India,IND,Jharkhand,JH,state,2022,Power sector emissions,Total,Total emissions,ktCO2,24950.62,1977.91,8.61
+India,IND,Jharkhand,JH,state,2023,Power sector emissions,Total,Total emissions,ktCO2,27708.68,2758.06,11.05
+India,IND,Karnataka,KA,state,2019,Power sector emissions,Total,Total emissions,ktCO2,21593.15,,
+India,IND,Karnataka,KA,state,2020,Power sector emissions,Total,Total emissions,ktCO2,16882.38,-4710.77,-21.82
+India,IND,Karnataka,KA,state,2021,Power sector emissions,Total,Total emissions,ktCO2,26852.91,9970.53,59.06
+India,IND,Karnataka,KA,state,2022,Power sector emissions,Total,Total emissions,ktCO2,29721.84,2868.93,10.68
+India,IND,Karnataka,KA,state,2023,Power sector emissions,Total,Total emissions,ktCO2,37347.19,7625.35,25.66
+India,IND,Kerala,KL,state,2019,Power sector emissions,Total,Total emissions,ktCO2,166.85,,
+India,IND,Kerala,KL,state,2020,Power sector emissions,Total,Total emissions,ktCO2,183.62,16.77,10.05
+India,IND,Kerala,KL,state,2021,Power sector emissions,Total,Total emissions,ktCO2,326.07,142.45,77.58
+India,IND,Kerala,KL,state,2022,Power sector emissions,Total,Total emissions,ktCO2,276.86,-49.21,-15.09
+India,IND,Kerala,KL,state,2023,Power sector emissions,Total,Total emissions,ktCO2,220.44,-56.42,-20.38
+India,IND,Ladakh,LA,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,6.2,,
+India,IND,Ladakh,LA,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,9.7,3.5,56.45
+India,IND,Ladakh,LA,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,9.37,-0.33,-3.4
+India,IND,Lakshadweep,LD,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,0.03,,
+India,IND,Lakshadweep,LD,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,0.03,0.0,0.0
+India,IND,Lakshadweep,LD,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,0.02,-0.01,-33.33
+India,IND,Lakshadweep,LD,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,0.01,-0.01,-50.0
+India,IND,Lakshadweep,LD,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,51.51,51.5,515000.0
+India,IND,Madhya Pradesh,MP,state,2019,Power sector emissions,Total,Total emissions,ktCO2,94428.37,,
+India,IND,Madhya Pradesh,MP,state,2020,Power sector emissions,Total,Total emissions,ktCO2,98801.37,4373.0,4.63
+India,IND,Madhya Pradesh,MP,state,2021,Power sector emissions,Total,Total emissions,ktCO2,105271.68,6470.31,6.55
+India,IND,Madhya Pradesh,MP,state,2022,Power sector emissions,Total,Total emissions,ktCO2,112896.12,7624.44,7.24
+India,IND,Madhya Pradesh,MP,state,2023,Power sector emissions,Total,Total emissions,ktCO2,118645.68,5749.56,5.09
+India,IND,Maharashtra,MH,state,2019,Power sector emissions,Total,Total emissions,ktCO2,92503.92,,
+India,IND,Maharashtra,MH,state,2020,Power sector emissions,Total,Total emissions,ktCO2,81279.8,-11224.12,-12.13
+India,IND,Maharashtra,MH,state,2021,Power sector emissions,Total,Total emissions,ktCO2,100866.57,19586.77,24.1
+India,IND,Maharashtra,MH,state,2022,Power sector emissions,Total,Total emissions,ktCO2,103041.97,2175.4,2.16
+India,IND,Maharashtra,MH,state,2023,Power sector emissions,Total,Total emissions,ktCO2,110968.2,7926.23,7.69
+India,IND,Manipur,MN,state,2019,Power sector emissions,Total,Total emissions,ktCO2,8.95,,
+India,IND,Manipur,MN,state,2020,Power sector emissions,Total,Total emissions,ktCO2,14.05,5.1,56.98
+India,IND,Manipur,MN,state,2021,Power sector emissions,Total,Total emissions,ktCO2,12.11,-1.94,-13.81
+India,IND,Manipur,MN,state,2022,Power sector emissions,Total,Total emissions,ktCO2,12.88,0.77,6.36
+India,IND,Manipur,MN,state,2023,Power sector emissions,Total,Total emissions,ktCO2,7.17,-5.71,-44.33
+India,IND,Meghalaya,ML,state,2019,Power sector emissions,Total,Total emissions,ktCO2,25.86,,
+India,IND,Meghalaya,ML,state,2020,Power sector emissions,Total,Total emissions,ktCO2,28.41,2.55,9.86
+India,IND,Meghalaya,ML,state,2021,Power sector emissions,Total,Total emissions,ktCO2,22.24,-6.17,-21.72
+India,IND,Meghalaya,ML,state,2022,Power sector emissions,Total,Total emissions,ktCO2,25.36,3.12,14.03
+India,IND,Meghalaya,ML,state,2023,Power sector emissions,Total,Total emissions,ktCO2,20.92,-4.44,-17.51
+India,IND,Mizoram,MZ,state,2019,Power sector emissions,Total,Total emissions,ktCO2,5.21,,
+India,IND,Mizoram,MZ,state,2020,Power sector emissions,Total,Total emissions,ktCO2,4.58,-0.63,-12.09
+India,IND,Mizoram,MZ,state,2021,Power sector emissions,Total,Total emissions,ktCO2,3.73,-0.85,-18.56
+India,IND,Mizoram,MZ,state,2022,Power sector emissions,Total,Total emissions,ktCO2,6.19,2.46,65.95
+India,IND,Mizoram,MZ,state,2023,Power sector emissions,Total,Total emissions,ktCO2,5.32,-0.87,-14.05
+India,IND,Nagaland,NL,state,2019,Power sector emissions,Total,Total emissions,ktCO2,5.87,,
+India,IND,Nagaland,NL,state,2020,Power sector emissions,Total,Total emissions,ktCO2,6.39,0.52,8.86
+India,IND,Nagaland,NL,state,2021,Power sector emissions,Total,Total emissions,ktCO2,4.37,-2.02,-31.61
+India,IND,Nagaland,NL,state,2022,Power sector emissions,Total,Total emissions,ktCO2,6.9,2.53,57.89
+India,IND,Nagaland,NL,state,2023,Power sector emissions,Total,Total emissions,ktCO2,6.03,-0.87,-12.61
+India,IND,Odisha,OR,state,2019,Power sector emissions,Total,Total emissions,ktCO2,32598.79,,
+India,IND,Odisha,OR,state,2020,Power sector emissions,Total,Total emissions,ktCO2,44206.74,11607.95,35.61
+India,IND,Odisha,OR,state,2021,Power sector emissions,Total,Total emissions,ktCO2,48057.4,3850.66,8.71
+India,IND,Odisha,OR,state,2022,Power sector emissions,Total,Total emissions,ktCO2,52146.05,4088.65,8.51
+India,IND,Odisha,OR,state,2023,Power sector emissions,Total,Total emissions,ktCO2,54256.26,2110.21,4.05
+India,IND,Others,OT,state,2019,Power sector emissions,Total,Total emissions,ktCO2,0.0,,
+India,IND,Others,OT,state,2020,Power sector emissions,Total,Total emissions,ktCO2,0.0,0.0,
+India,IND,Others,OT,state,2021,Power sector emissions,Total,Total emissions,ktCO2,0.0,0.0,
+India,IND,Puducherry,PY,Union territory,2019,Power sector emissions,Total,Total emissions,ktCO2,116.85,,
+India,IND,Puducherry,PY,Union territory,2020,Power sector emissions,Total,Total emissions,ktCO2,121.58,4.73,4.05
+India,IND,Puducherry,PY,Union territory,2021,Power sector emissions,Total,Total emissions,ktCO2,118.94,-2.64,-2.17
+India,IND,Puducherry,PY,Union territory,2022,Power sector emissions,Total,Total emissions,ktCO2,116.71,-2.23,-1.87
+India,IND,Puducherry,PY,Union territory,2023,Power sector emissions,Total,Total emissions,ktCO2,115.18,-1.53,-1.31
+India,IND,Punjab,PB,state,2019,Power sector emissions,Total,Total emissions,ktCO2,19752.1,,
+India,IND,Punjab,PB,state,2020,Power sector emissions,Total,Total emissions,ktCO2,12775.56,-6976.54,-35.32
+India,IND,Punjab,PB,state,2021,Power sector emissions,Total,Total emissions,ktCO2,19247.9,6472.34,50.66
+India,IND,Punjab,PB,state,2022,Power sector emissions,Total,Total emissions,ktCO2,25110.4,5862.5,30.46
+India,IND,Punjab,PB,state,2023,Power sector emissions,Total,Total emissions,ktCO2,27226.62,2116.22,8.43
+India,IND,Rajasthan,RJ,state,2019,Power sector emissions,Total,Total emissions,ktCO2,39521.34,,
+India,IND,Rajasthan,RJ,state,2020,Power sector emissions,Total,Total emissions,ktCO2,36886.63,-2634.71,-6.67
+India,IND,Rajasthan,RJ,state,2021,Power sector emissions,Total,Total emissions,ktCO2,40685.92,3799.29,10.3
+India,IND,Rajasthan,RJ,state,2022,Power sector emissions,Total,Total emissions,ktCO2,48814.03,8128.11,19.98
+India,IND,Rajasthan,RJ,state,2023,Power sector emissions,Total,Total emissions,ktCO2,50699.51,1885.48,3.86
+India,IND,Sikkim,SK,state,2019,Power sector emissions,Total,Total emissions,ktCO2,266.39,,
+India,IND,Sikkim,SK,state,2020,Power sector emissions,Total,Total emissions,ktCO2,263.15,-3.24,-1.22
+India,IND,Sikkim,SK,state,2021,Power sector emissions,Total,Total emissions,ktCO2,272.69,9.54,3.63
+India,IND,Sikkim,SK,state,2022,Power sector emissions,Total,Total emissions,ktCO2,285.89,13.2,4.84
+India,IND,Sikkim,SK,state,2023,Power sector emissions,Total,Total emissions,ktCO2,224.22,-61.67,-21.57
+India,IND,Tamil Nadu,TN,state,2019,Power sector emissions,Total,Total emissions,ktCO2,54055.58,,
+India,IND,Tamil Nadu,TN,state,2020,Power sector emissions,Total,Total emissions,ktCO2,44473.05,-9582.53,-17.73
+India,IND,Tamil Nadu,TN,state,2021,Power sector emissions,Total,Total emissions,ktCO2,50134.71,5661.66,12.73
+India,IND,Tamil Nadu,TN,state,2022,Power sector emissions,Total,Total emissions,ktCO2,54100.54,3965.83,7.91
+India,IND,Tamil Nadu,TN,state,2023,Power sector emissions,Total,Total emissions,ktCO2,59487.81,5387.27,9.96
+India,IND,Telangana,TG,state,2019,Power sector emissions,Total,Total emissions,ktCO2,40352.43,,
+India,IND,Telangana,TG,state,2020,Power sector emissions,Total,Total emissions,ktCO2,35970.98,-4381.45,-10.86
+India,IND,Telangana,TG,state,2021,Power sector emissions,Total,Total emissions,ktCO2,42223.91,6252.93,17.38
+India,IND,Telangana,TG,state,2022,Power sector emissions,Total,Total emissions,ktCO2,41884.31,-339.6,-0.8
+India,IND,Telangana,TG,state,2023,Power sector emissions,Total,Total emissions,ktCO2,45490.01,3605.7,8.61
+India,IND,Tripura,TR,state,2019,Power sector emissions,Total,Total emissions,ktCO2,3269.66,,
+India,IND,Tripura,TR,state,2020,Power sector emissions,Total,Total emissions,ktCO2,3157.91,-111.75,-3.42
+India,IND,Tripura,TR,state,2021,Power sector emissions,Total,Total emissions,ktCO2,3130.24,-27.67,-0.88
+India,IND,Tripura,TR,state,2022,Power sector emissions,Total,Total emissions,ktCO2,3396.11,265.87,8.49
+India,IND,Tripura,TR,state,2023,Power sector emissions,Total,Total emissions,ktCO2,3341.32,-54.79,-1.61
+India,IND,Uttar Pradesh,UP,state,2019,Power sector emissions,Total,Total emissions,ktCO2,98293.85,,
+India,IND,Uttar Pradesh,UP,state,2020,Power sector emissions,Total,Total emissions,ktCO2,96082.65,-2211.2,-2.25
+India,IND,Uttar Pradesh,UP,state,2021,Power sector emissions,Total,Total emissions,ktCO2,107365.67,11283.02,11.74
+India,IND,Uttar Pradesh,UP,state,2022,Power sector emissions,Total,Total emissions,ktCO2,122844.18,15478.51,14.42
+India,IND,Uttar Pradesh,UP,state,2023,Power sector emissions,Total,Total emissions,ktCO2,126356.75,3512.57,2.86
+India,IND,Uttarakhand,UT,state,2019,Power sector emissions,Total,Total emissions,ktCO2,1319.56,,
+India,IND,Uttarakhand,UT,state,2020,Power sector emissions,Total,Total emissions,ktCO2,706.65,-612.91,-46.45
+India,IND,Uttarakhand,UT,state,2021,Power sector emissions,Total,Total emissions,ktCO2,1191.68,485.03,68.64
+India,IND,Uttarakhand,UT,state,2022,Power sector emissions,Total,Total emissions,ktCO2,456.8,-734.88,-61.67
+India,IND,Uttarakhand,UT,state,2023,Power sector emissions,Total,Total emissions,ktCO2,594.59,137.79,30.16
+India,IND,West Bengal,WB,state,2019,Power sector emissions,Total,Total emissions,ktCO2,60482.19,,
+India,IND,West Bengal,WB,state,2020,Power sector emissions,Total,Total emissions,ktCO2,56293.96,-4188.23,-6.92
+India,IND,West Bengal,WB,state,2021,Power sector emissions,Total,Total emissions,ktCO2,67929.43,11635.47,20.67
+India,IND,West Bengal,WB,state,2022,Power sector emissions,Total,Total emissions,ktCO2,70951.4,3021.97,4.45
+India,IND,West Bengal,WB,state,2023,Power sector emissions,Total,Total emissions,ktCO2,74117.42,3166.02,4.46

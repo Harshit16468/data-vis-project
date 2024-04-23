@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature and Rainfall Visualization</title>
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <style>
+    /* Style for tooltip container */
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 10px;
+      pointer-events: none; /* Ensure tooltip doesn't interfere with mouse events */
+      opacity: 0; /* Initially hide tooltip */
+      transition: opacity 0.3s; /* Add transition for smooth appearance */
+    }
+    .description-box {
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 30px;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: url(bg.jpg) no-repeat;
+    background-size: cover;
+    /* Add a semi-transparent black overlay to increase contrast */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Create a div for the temperature graph -->
+<div id="temperatureGraph"></div>
+<!-- Description box for temperature plot -->
+<div class="description-box">
+  <h2>Temperature Plot</h2>
+  <p>This plot shows the temperature data over the years. The x-axis represents the years from 1901 to 2021, and the y-axis represents the temperature in degrees Celsius.</p>
+  <p>This plot can help people understand climate trends particularly in terms of temperature.</p>
+  <p> Analyzing temperature data over time can provide insights into long-term climate trends, helping researchers and policymakers understand patterns such as global warming or cooling</p>
+</div>
+
+<!-- Create a div for the temperature legend -->
+<div id="temperatureLegend"></div>
+
+<!-- Create a div for the rainfall graph -->
+<div id="rainfallGraph"></div>
+<!-- Description box for rainfall plot -->
+<div class="description-box">
+  <h2>Rainfall Plot</h2>
+  <p>This plot shows the rainfall data over the years. The x-axis represents the years from 1901 to 2021, and the y-axis represents the rainfall in millimeters.</p>
+  <p>This plot can help people manage their water resources effectively by understanding the historical trends in rainfall pattern.</p>
+  <p>These patterns can also help in mitigating flood like situations by creating flood management strategies to mitigate damage and protect communities.</p>
+
+</div>
+
+<!-- Create a div for the rainfall legend -->
+<div id="rainfallLegend"></div>
+
+<!-- Create a div for the tooltip container -->
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+  // set the dimensions and margins of the temperature graph
+  var margin = { top: 10, right: 30, bottom: 30, left: 60 },
+    width = 900 ,
+    height = 200  ;
+
+  // append the svg object to the temperature graph div
+  var temperatureSvg = d3.select("#temperatureGraph")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // append the temperature legend svg to the temperature legend div
+  var temperatureLegendSvg = d3.select("#temperatureLegend")
+    .append("svg")
+    .attr("width", 200)
+    .attr("height", height + margin.top + margin.bottom);
+
+  // Read the temperature data
+  d3.csv("../static/temp.csv", function (temperatureData) {
+    // Parse the temperature data
+    temperatureData.forEach(function (d) {
+      d.YEAR = +d.YEAR;
+      d.ANNUAL = +d.ANNUAL;
+      d["JAN-FEB"] = +d["JAN-FEB"];
+      d["MAR-MAY"] = +d["MAR-MAY"];
+      d["JUN-SEP"] = +d["JUN-SEP"];
+      d["OCT-DEC"] = +d["OCT-DEC"];
+    });
+
+    // List of groups
+    var temperatureKeys = temperatureData.columns.slice(1);
+
+    // Add X axis for temperature
+    var temperatureX = d3
+      .scaleLinear()
+      .domain([1901, 2021])
+      .range([0, width]);
+    temperatureSvg
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(temperatureX).ticks(5).tickFormat(d3.format("d")));
+
+    // Add Y axis for temperature
+    var temperatureY = d3
+      .scaleLinear()
+      .domain([15, 30])
+      .range([height, 0]);
+    temperatureSvg.append("g").call(d3.axisLeft(temperatureY));
+
+    // Color palette for temperature
+    var temperatureColor = d3.scaleOrdinal().domain(temperatureKeys).range(d3.schemeCategory10);
+
+    // Draw the temperature lines
+    var temperatureLines = temperatureKeys.map(function(key) {
+      return temperatureSvg.append("path")
+        .datum(temperatureData)
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", temperatureColor(key))
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return temperatureX(d.YEAR); })
+          .y(function(d) { return temperatureY(d[key]); })
+        );
+    });
+
+    // Add temperature legend
+    var temperatureLegend = temperatureLegendSvg.selectAll(".legend")
+      .data(temperatureKeys)
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    // Draw temperature legend colored rectangles
+    temperatureLegend.append("rect")
+      .attr("x", 5)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", temperatureColor);
+
+    // Draw temperature legend text
+    temperatureLegend.append("text")
+      .attr("x", 25)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d; });
+
+    // This allows to find the closest X index of the mouse for temperature
+    var temperatureBisect = d3.bisector(function(d) { return d.YEAR; }).left;
+
+    // Create a rect on top of the temperature svg area: this rectangle recovers mouse position
+    temperatureSvg.append('rect')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('width', width)
+      .attr('height', height)
+      .on('mouseover', temperatureMouseover)
+      .on('mousemove', temperatureMousemove)
+      .on('mouseout', temperatureMouseout);
+
+    // What happens when the mouse move over temperature -> show the tooltip
+    function temperatureMouseover() {
+      d3.select("#tooltip").style('opacity', 1);
+    }
+
+    function temperatureMousemove() {
+      // recover coordinate we need
+      var x0 = temperatureX.invert(d3.mouse(this)[0]);
+      var i = temperatureBisect(temperatureData, x0, 1);
+      // Build tooltip content
+      var tooltipContent = "";
+      temperatureKeys.forEach(function(key) {
+        tooltipContent += "Year: " + temperatureData[i].YEAR + ", " + key + ": " + temperatureData[i][key] + "<br>";
+      });
+      // Update tooltip content and position
+      d3.select("#tooltip")
+        .html(tooltipContent)
+        .style('left', (d3.event.pageX + 10) + 'px')
+        .style('top', (d3.event.pageY - 20) + 'px');
+    }
+
+    function temperatureMouseout() {
+      d3.select("#tooltip").style('opacity', 0);
+    }
+  });
+
+  // set the dimensions and margins of the rainfall graph
+  var rainfallMargin = { top: 10, right: 30, bottom: 30, left: 60 },
+    rainfallWidth = 900 ,
+    rainfallHeight = 200 ;
+
+  // append the svg object to the rainfall graph div
+  var rainfallSvg = d3.select("#rainfallGraph")
+    .append("svg")
+    .attr("width", rainfallWidth + rainfallMargin.left + rainfallMargin.right)
+    .attr("height", rainfallHeight + rainfallMargin.top + rainfallMargin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + rainfallMargin.left + "," + rainfallMargin.top + ")");
+
+  // append the rainfall legend svg to the rainfall legend div
+  var rainfallLegendSvg = d3.select("#rainfallLegend")
+    .append("svg")
+    .attr("width", 200)
+    .attr("height", rainfallHeight + rainfallMargin.top + rainfallMargin.bottom);
+
+  // Read the rainfall data
+  d3.csv("../static/rainfall.csv", function (rainfallData) {
+    // Parse the rainfall data
+    rainfallData.forEach(function (d) {
+      d.YEAR = +d.YEAR;
+      d.ANNUAL = +d.ANNUAL;
+      d["Jan-Feb"] = +d["Jan-Feb"];
+      d["Mar-May"] = +d["Mar-May"];
+      d["Jun-Sep"] = +d["Jun-Sep"];
+      d["Oct-Dec"] = +d["Oct-Dec"];
+    });
+
+    // List of groups
+    var rainfallKeys = rainfallData.columns.slice(1);
+
+    // Add X axis for rainfall
+    var rainfallX = d3
+      .scaleLinear()
+      .domain([1901, 2021])
+      .range([0, rainfallWidth]);
+    rainfallSvg
+      .append("g")
+      .attr("transform", "translate(0," + rainfallHeight + ")")
+      .call(d3.axisBottom(rainfallX).ticks(5).tickFormat(d3.format("d")));
+
+    // Add Y axis for rainfall
+    var rainfallY = d3
+      .scaleLinear()
+      .domain([0, 1600])
+      .range([rainfallHeight, 0]);
+    rainfallSvg.append("g").call(d3.axisLeft(rainfallY));
+
+    // Color palette for rainfall
+    var rainfallColor = d3.scaleOrdinal().domain(rainfallKeys).range(d3.schemeCategory10);
+
+    // Draw the rainfall lines
+    var rainfallLines = rainfallKeys.map(function(key) {
+      return rainfallSvg.append("path")
+        .datum(rainfallData)
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", rainfallColor(key))
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return rainfallX(d.YEAR); })
+          .y(function(d) { return rainfallY(d[key]); })
+        );
+    });
+
+    // Add rainfall legend
+    var rainfallLegend = rainfallLegendSvg.selectAll(".legend")
+      .data(rainfallKeys)
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    // Draw rainfall legend colored rectangles
+    rainfallLegend.append("rect")
+      .attr("x", 5)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", rainfallColor);
+
+    // Draw rainfall legend text
+    rainfallLegend.append("text")
+      .attr("x", 25)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(function(d) { return d; });
+
+    // This allows to find the closest X index of the mouse for rainfall
+    var rainfallBisect = d3.bisector(function(d) { return d.YEAR; }).left;
+
+    // Create a rect on top of the rainfall svg area: this rectangle recovers mouse position
+    rainfallSvg.append('rect')
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('width', rainfallWidth)
+      .attr('height', rainfallHeight)
+      .on('mouseover', rainfallMouseover)
+      .on('mousemove', rainfallMousemove)
+      .on('mouseout', rainfallMouseout);
+
+    // What happens when the mouse move over rainfall -> show the tooltip
+    function rainfallMouseover() {
+      d3.select("#tooltip").style('opacity', 1);
+    }
+
+    function rainfallMousemove() {
+      // recover coordinate we need
+      var x0 = rainfallX.invert(d3.mouse(this)[0]);
+      var i = rainfallBisect(rainfallData, x0, 1);
+      // Build tooltip content
+      var tooltipContent = "";
+      rainfallKeys.forEach(function(key) {
+        tooltipContent += "Year: " + rainfallData[i].YEAR + ", " + key + ": " + rainfallData[i][key] + "<br>";
+      });
+      // Update tooltip content and position
+      d3.select("#tooltip")
+        .html(tooltipContent)
+        .style('left', (d3.event.pageX + 10) + 'px')
+        .style('top', (d3.event.pageY - 20) + 'px');
+    }
+
+    function rainfallMouseout() {
+      d3.select("#tooltip").style('opacity', 0);
+    }
+  });
+</script>
+
+</body>
+</html>

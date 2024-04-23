@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualisations</title>
+    <!-- Link to your CSS file if you have one -->
+    <link rel="stylesheet" href="../static/style1.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <section>
+      <header>
+        <!-- Your header content here -->
+        <h1>About</h1>
+        <p>Welcome to our website! Explore our visualization options below:</p>
+      </header>
+      <div class="visualization-buttons">
+        <form id="seaLevelForm" method="POST" action="{{ url_for('watch_sea_level_video') }}">
+          <input type="hidden" name="video_url" value="sea_level.html">
+          <button class="vis-button" type="submit">Sea Level Rise</button>
+        </form>
+        <form id="watchChartForm" action="/render_chart_html" method="POST">
+          <input type="hidden" name="template_name" value="chart.html">
+          <button class="vis-button" type="submit">Countrywise CO2 Emmission</button>
+        </form>
+        <form id="watchChartForm" action="/extent" method="POST">
+          <input type="hidden" name="template_name" value="chart.html">
+          <button class="vis-button" type="submit">Extent of Ice and Temperature vs Years</button>
+        </form>
+        <form id="seaLevelForm" method="POST" action="{{ url_for('heat') }}">
+          <input type="hidden" name="video_url" value="heat.html">
+          <button class="vis-button" type="submit">Heat Map</button>
+        </form>
+        <form id="india-area" method="POST" action="/bar-race">
+          <input type="hidden" name="template_name" value="bar-race.html">
+          <button class="vis-button" type="submit">Bar-race for climate change disaster</button>
+        </form>
+        <form id="sun-burst" method="POST" action="/sunburst">
+          <input type="hidden" name="template_name" value="sunburst.html">
+          <button class="vis-button" type="submit">Per capita primary fuel consumption sunburst</button>
+        </form>
+        <form id="bubble" method="POST" action="/bubble">
+        <input type="hidden" name="template_name" value="k.html">
+          <button class="vis-button" type="submit">Bubble chart to compare different states</button>
+        </form>
+        <form id="temp" method="POST" action="/temp">
+          <input type="hidden" name="template_name" value="j.html">
+            <button class="vis-button" type="submit">Temperature and Rainfall for India</button>
+        </form>
+        <!-- Add more buttons as needed -->
+      </div>
+    </section>
+
+    <footer>
+      <!-- Your footer content here -->
+    </footer>
+  </body>
+</html>

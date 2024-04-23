@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<style>
+ 
+
+    #legend-table {
+        border-collapse: collapse;
+        margin-top: 0px; /* Adjust margin as needed */
+    }
+    
+    #legend-table td {
+        padding: 5px;
+        border: 1px solid #ddd; /* Add border styling as needed */
+    }
+    
+    #legend-table td div {
+        width: 20px; /* Adjust width of color box */
+        height: 20px; /* Adjust height of color box */
+        display: inline-block;
+        margin-right: 5px; /* Adjust margin as needed */
+    }
+    #container {
+        width: 100%;
+        display:flex;
+        
+    }
+    #infoBox {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        color: #333;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #infoBox p {
+        margin: 0 0 10px;
+        line-height: 1.5;
+    }
+</style>
+</head>
+<body>
+    <h1>Sequence Sunburst Chart for Per Capita Energy Consumption</h1>
+    <div id="infoBox">
+        <h2>Description</h2>
+        <p>This graph shows the reliance of different sources of fuel of the world and major countries and through this we can judge their attempts to shift to a cleaner form of energy.</p>
+        <h4>It shows data from the year 2022</h4>
+     
+     </div>
+     <div id="container">
+
+
+    <table id="legend-table" padding="20px"></table>
+
+</div>
+    <script>
+        // Set up dimensions
+        const width = 600;
+        const height = 600;
+        const radius = Math.min(width, height) / 2;
+
+        // Create SVG element
+        const svg = d3.select("#container")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width / 2},${height / 2})`);
+
+        // Define the data
+        const data = {
+            children: [
+                {
+                    name: "United States",
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:8103},
+                    {name:"Oil",size:29684},
+                    {name:"Gas",size:26049}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:6006},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:1992},
+                    {name:"Wind",size:3384},
+                    {name:"Solar",size:1588},
+                    {name:"Others",size:663}
+                    ]}
+                    ]
+                },
+                {
+                    name: "Sweden"
+                    ,
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:1925},
+                    {name:"Oil",size:13131},
+                    {name:"Gas",size:697}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:12223},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:17240},
+                    {name:"Wind",size:8061},
+                    {name:"Solar",size:650},
+                    {name:"Others",size:4034}
+                    ]}
+                    ]
+                },
+                {
+                    name:"Germany",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:7763},
+                    {name:"Oil",size:14191},
+                    {name:"Gas",size:9270}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:1041},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:547},
+                    {name:"Wind",size:3917},
+                    {name:"Solar",size:1900},
+                    {name:"Others",size:1928}
+                    ]}
+                    ]
+                    
+                },
+                {
+                    name:"Japan",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:11016},
+                    {name:"Oil",size:14811},
+                    {name:"Gas",size:8107}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:1044},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:1575},
+                    {name:"Wind",size:171},
+                    {name:"Solar",size:2153},
+                    {name:"Others",size:1056}
+                    ]}
+                    ]
+                },
+                {
+                    name:"France",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:920},
+                    {name:"Oil",size:12514},
+                    {name:"Gas",size:5937}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:11409},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:1798},
+                    {name:"Wind",size:1533},
+                    {name:"Solar",size:812},
+                    {name:"Others",size:485}
+                    ]}
+                    ]
+                },
+                {
+                    name:"China",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:17224},
+                    {name:"Oil",size:5485},
+                    {name:"Gas",size:2634}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:733},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:2382},
+                    {name:"Wind",size:1394},
+                    {name:"Solar",size:782},
+                    {name:"Others",size:395}
+                    ]}
+                    ]
+                },
+                {
+                    name:"United Kingdom",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:869},
+                    {name:"Oil",size:10976},
+                    {name:"Gas",size:10662}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:1768},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:205},
+                    {name:"Wind",size:3095},
+                    {name:"Solar",size:537},
+                    {name:"Others",size:1676.32}
+                    ]}
+                    ]
+                },
+                {
+                    name:"South Africa",
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:15365},
+                    {name:"Oil",size:4935},
+                    {name:"Gas",size:761}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:421},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:134},
+                    {name:"Wind",size:422},
+                    {name:"Solar",size:269},
+                    {name:"Others",size:22}
+                    ]}
+                    ]
+                },
+                {
+                    name:"Rest of the World",
+ 
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:5624},
+                    {name:"Oil",size:6641},
+                    {name:"Gas",size:4942}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:840},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:1416},
+                    {name:"Wind",size:688},
+                    {name:"Solar",size:432},
+                    {name:"Others",size:302}
+                    ]}
+                    ]
+                },
+                {
+                    name:"Brazil",
+
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:755},
+                    {name:"Oil",size:6458},
+                    {name:"Gas",size:1485}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:169},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:5171},
+                    {name:"Wind",size:988},
+                    {name:"Solar",size:364},
+                    {name:"Others",size:782}
+                    ]}
+                    ]
+                },
+                {
+                    name:"India",
+  
+                    children:
+                    [
+                    {
+                    name:"Fossil fuels"                   ,
+                    children:
+                    [
+                    {name:"Coal",size:3938},
+                    {name:"Oil",size:1969},
+                    {name:"Gas",size:410}
+                    ]
+                }
+                    ,
+                    {name:"Nuclear",size:81},
+                    {name:"Renewables",
+                    children:
+                    [
+                    {name:"Hydropower",size:321},
+                    {name:"Wind",size:128},
+                    {name:"Solar",size:175},
+                    {name:"Others",size:91}
+                    ]}
+                    ]
+                }
+
+            ]
+        };
+
+        // Define color scale
+const customBlueScheme = ['#1f77d3', '#aec7e8', '#98df8a', '#2ca02c', '#17becf', '#9edae5', '#1f77a4', '#aec7e8', '#98df8a', '#2ca02c','#2cb02d'];
+
+const color = d3.scaleOrdinal()
+    .domain(data.children.map(d => d.name))
+    .range(customBlueScheme);
+
+// Modify color scale for first depth
+const firstDepthColors = ['#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2'];
+
+const firstDepthColorScale = d3.scaleOrdinal()
+    .domain(data.children.map(d => d.name))
+    .range(firstDepthColors);
+    const partition = data => {
+        const root = d3.hierarchy(data)
+            .sum(d => d.size)
+            .sort((a, b) => b.value - a.value);
+        return d3.partition()
+            .size([2 * Math.PI, radius])
+            (root);
+    };
+
+    const arc = d3.arc()
+        .startAngle(d => d.x0)
+        .endAngle(d => d.x1)
+        .padAngle(0.02)
+        .padRadius(radius / 3)
+        .innerRadius(d => d.y0)
+        .outerRadius(d => d.y1 - 1);
+// Draw arcs
+// Define color scheme for fossil fuels and renewables
+const schemeBlue7 = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728'];
+function getRedShade(luminance) {
+    const hue = 0; // Red hue
+    const saturation = 100; // Full saturation
+    return `hsl(${hue}, ${saturation}%, ${luminance}%)`;
+}
+// Draw arcs
+const root = partition(data);
+svg.selectAll("path")
+    .data(root.descendants())
+    .join("path")
+    .attr("fill", d => {
+        if (d.depth === 0) return "none"; // Root
+        if (d.depth === 1) return firstDepthColorScale(d.data.name); // First depth
+        if (d.depth === 2) {
+            console.log(d);
+            // Second depth
+            if (d.data.name === "Fossil fuels") return "#1f77b4"; // Dark blue for fossil fuels
+            if (d.data.name === "Renewables") return "#2ca02c"; // Green for renewables
+            // Third depth
+            if (d.data.name === "Nuclear") return "yellow"; // Green for renewables
+        }
+        if(d.depth===3){
+            if (d.data.name === "Coal") return schemeBlue7[0]; // Assign first color from scheme for coal
+            if (d.data.name === "Oil") return schemeBlue7[1]; // Assign second color from scheme for oil
+            if (d.data.name === "Gas") return schemeBlue7[2]; // Assign third color from scheme for gas
+            if (d.data.name === "Hydropower") return schemeBlue7[3]; // Assign fourth color from scheme for hydropower
+            if (d.data.name === "Wind") return schemeBlue7[4]; // Assign fifth color from scheme for wind
+            if (d.data.name === "Solar") return schemeBlue7[5]; // Assign sixth color from scheme for solar
+            if (d.data.name === "Others") return schemeBlue7[6]; // Assign seventh color from scheme for others
+        }
+        return color(d.data.name); // Other depths
+    })
+    .attr("d", arc)
+    .append("title")
+    .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("\n")}\n${getpercentage(d)}`);
+
+        // Create arcs
+
+        // Draw arcs
+// Draw arcs
+
+
+        // Add labels
+        svg.selectAll("text")
+        .data(root.descendants().filter(d => d.depth))
+        .join("text")
+        .attr("transform", function(d) {
+            const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+            const y = (d.y0 + d.y1) / 2 * radius;
+            return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
+        })
+        .attr("dy", "0.35em")
+        .text(d => d.data.name)
+        .attr("text-anchor", d => (d.x0 + d.x1) / 2 > Math.PI ? "end" : null)
+        .attr("font-size", "12px")
+        .style("display", "flex")
+        .style("flex-direction", "column");
+    
+    const legendData = data.children.map(d => d.name);
+    legendData.push("Fossil");
+    legendData.push("Renewable");
+    legendData.push("Nuclear");
+    legendData.push("Wind");
+    legendData.push("Oil");
+    legendData.push("Coal");
+    legendData.push("Gas");
+    legendData.push("Solar");
+    legendData.push("Hydropower");
+    legendData.push("Others");
+    
+    const legend = d3.select("#legend").selectAll(".legend-item")
+    .data(legendData)
+    .enter().append("div")
+    .attr("class", "legend-item")
+    .style("display", "flex")
+    .style("flex-direction", "column")
+    .style("width", "50px"); // Limiting width to 100px
+
+    
+        function getColor (d){
+            if (d === "Fossil fuels") return "#1f77b4";
+            if (d === "Renewables") return "#2ca02c";
+            if (d=== "Nuclear") return "yellow"; // Green for renewables
+    
+            // Add more color conditions if needed
+            if (d === "Coal") return schemeBlue7[0]; // Assign first color from scheme for coal
+            if (d === "Oil") return schemeBlue7[1]; // Assign second color from scheme for oil
+            if (d === "Gas") return schemeBlue7[2]; // Assign third color from scheme for gas
+            if (d === "Hydropower") return schemeBlue7[3]; // Assign fourth color from scheme for hydropower
+            if (d === "Wind") return schemeBlue7[4]; // Assign fifth color from scheme for wind
+            if (d === "Solar") return schemeBlue7[5]; // Assign sixth color from scheme for solar
+            if (d === "Others") return schemeBlue7[6]; // Assign seventh color from scheme for others
+    
+            return firstDepthColorScale(d);
+        }
+
+const legendTable = d3.select("#legend-table");
+
+legendData.forEach(d => {
+    const row = legendTable.append("tr");
+    row.append("td")
+        .append("div")
+        .style("width", "20px")
+        .style("height", "20px")
+        .style("background-color", getColor(d)); // Define getColor function to get color for each legend item
+
+    row.append("td")
+        .text(d);
+});
+    // Add hover functionality to arcs
+// Define a tooltip element
+const tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+// Add hover functionality to arcs
+svg.selectAll("path")
+    .on("mouseover", function(d) {
+        // Highlight the hovered arc and its ancestors
+        const ancestors = getAncestors(d.srcElement.__data__);
+        svg.selectAll("path")
+            .style("opacity", arcData => ancestors.includes(arcData) ? 1 : 0.2);
+
+        // Display the value of the hovered arc
+
+    })
+    .on("mouseout", function(d) {
+        // Restore opacity for all arcs
+        svg.selectAll("path")
+            .style("opacity", 1);
+        tooltip.html(`Total:`+ getpercentage(d.srcElement.__data__))
+            .style("left", 300 + "px")
+            .style("top", 300 + "px");
+        // Hide the tooltip
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+    });
+
+// Function to get ancestors of a node
+function getAncestors(node) {
+    const ancestors = [];
+    let current = node;
+    console.log(node);
+    ancestors.push(node);
+    while (current.parent) {
+        ancestors.push(current.parent);
+        current = current.parent;
+        console.log(current);
+    }
+
+    return ancestors;
+}
+function getpercentage(node){
+    let current = node;
+    while (current.parent) {
+        current = current.parent;
+    }
+    return node.value/current.value*100;
+
+}
+
+    </script>
+</body>
+</html>

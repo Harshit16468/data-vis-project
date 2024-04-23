@@ -6,21 +6,63 @@
     <title>CO2 Emissions Visualization</title>
     <!-- Include Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .country-option {
+        .selected-countries-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .selected-country {
             display: flex;
             align-items: center;
+            padding: 5px 10px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
+        .selected-country-name {
+            margin-right: 10px;
+        }
+        .remove-country {
+            cursor: pointer;
+        }
+        #infoBox {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      
+        #infoBox p {
+            margin: 0 0 10px;
+            line-height: 1.5;
+              }
+         </style>
+
     </style>
 </head>
 <body>
+</head>
+
     <div class="container mt-5">
         <h1 class="text-center mb-4">CO2 Emissions Visualization</h1>
+        <div id="infoBox">
+            <h2>Description</h2>
+            <p>This graph shows CO2 emissions of different countries. We can select upto 5 countries and has Earth listed too in it.</p>
+            <h4>It shows data from the year 1800 to 2022</h4>
+         
+         </div>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="country">Select a country:</label>
+                    <label for="country">Select up to 5 countries:</label>
+                    <div id="selected-countries" class="selected-countries-container"></div>
                     <select id="country" class="form-control">
                         {% for country in countries %}
                             <option value="{{ country.code }}" class="country-option">
@@ -39,56 +81,107 @@
     </div>
 
     <script>
-        // Function to update scatter plot based on selected country
-        function updatePlot(selectedCountry) {
-            var selectedOption = document.querySelector('option[value="' + selectedCountry + '"]');
-            var countryName = selectedOption.textContent.trim().replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ''); // Remove flag characters
-            var countryFacts = selectedOption.getAttribute('data-facts');
+        var colors = ['blue', 'red', 'purple', 'yellow', 'green'];
+        var selectedCountries = [];
 
-            fetch('/get_data', {
-                method: 'POST',
-                body: new URLSearchParams({
-                    'country': selectedCountry
-                }),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                var years = data.years;
-                var values = data.values;
-
-                var trace = {
-                    x: years,
-                    y: values,
-                    mode: 'markers',
-                    type: 'scatter',
-                    name: countryName
-                };
-
-                var layout = {
-                    title: 'CO2 Emissions Across Years',
-                    xaxis: {
-                        title: 'Year'
-                    },
-                    yaxis: {
-                        title: 'CO2 Emissions (gigagram / a)'
+        // Function to update scatter plot based on selected countries
+        function updatePlot() {
+            var data = [];
+            selectedCountries.forEach((country, index) => {
+                fetch('/get_data', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'country': country
+                    }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     }
-                };
+                })
+                .then(response => response.json())
+                .then(countryData => {
+                    var years = countryData.years;
+                    var values = countryData.values;
 
-                Plotly.newPlot('chart', [trace], layout);
+                    var trace = {
+                        x: years,
+                        y: values,
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: getCountryName(country),
+                        marker: {
+                            color: colors[index]
+                        }
+                    };
+
+                    data.push(trace);
+
+                    Plotly.newPlot('chart', data, getLayout());
+                });
+            });
+        }
+
+        // Function to get country name from its code
+        function getCountryName(code) {
+            var option = document.querySelector('option[value="' + code + '"]');
+            return option.textContent.trim().replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, '');
+        }
+
+        // Function to get layout for the plot
+        function getLayout() {
+            return {
+                title: 'CO2 Emissions Across Years',
+                xaxis: {
+                    title: 'Year'
+                },
+                yaxis: {
+                    title: 'CO2 Emissions (gigagram / a)'
+                },
+                legend: {
+                    orientation: 'h',
+                    y: -0.2
+                }
+            };
+        }
+
+        // Function to add selected country to the list
+        function addSelectedCountry(code) {
+            if (selectedCountries.length >= 5 || selectedCountries.includes(code)) return;
+            selectedCountries.push(code);
+            renderSelectedCountries();
+            updatePlot();
+        }
+
+        // Function to remove selected country from the list
+        function removeSelectedCountry(index) {
+            selectedCountries.splice(index, 1);
+            renderSelectedCountries();
+            updatePlot();
+        }
+
+        // Function to render selected countries
+        function renderSelectedCountries() {
+            var selectedCountriesDiv = document.getElementById('selected-countries');
+            selectedCountriesDiv.innerHTML = '';
+            selectedCountries.forEach((country, index) => {
+                var countryName = getCountryName(country);
+                var div = document.createElement('div');
+                div.classList.add('selected-country');
+                div.innerHTML = `
+                    <span class="selected-country-name">${countryName}</span>
+                    <span class="remove-country" onclick="removeSelectedCountry(${index})">&times;</span>
+                `;
+                selectedCountriesDiv.appendChild(div);
             });
         }
 
         // Event listener for dropdown change
         document.getElementById('country').addEventListener('change', function() {
             var selectedCountry = this.value;
-            updatePlot(selectedCountry);
+            addSelectedCountry(selectedCountry);
         });
 
-        // Initialize plot with the first country
-        updatePlot(document.getElementById('country').value);
+        // Initialize plot
+        updatePlot();
     </script>
 </body>
 </html>

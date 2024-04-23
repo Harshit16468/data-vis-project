@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Map</title>
+    <style>
+        #map-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .legend-item {
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0.5px solid #aaa;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        #scatter-plot {
+            width: 800px;
+            height: 100px;
+            margin-top: 10px;
+        }
+
+        circle {
+            fill: steelblue;
+            fill-opacity: 0.7;
+            stroke: none;
+        }
+        #infoBox {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      
+        #infoBox p {
+            margin: 0 0 10px;
+            line-height: 1.5;
+              }
+         </style>
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+</head>
+
+<body>
+    <h1 class="text-center mb-4">Choropleth Graph</h1>
+    <div id="infoBox">
+        <h2>Description</h2>
+        <p>This graph shows CO2 emissions of different countries relatively using the Choropleth grph.</p>
+        <h4>It shows data from the year 1800 to 2022</h4>
+    
+     </div>
+    <div id="map-container">
+        <svg id="map"></svg>
+    </div>
+    <div>
+        <label>
+            <input type="range" min="1800" max="2022" value="1800" step="1" id="yearSlider" onchange="sliderChanged(this.value)">
+            Year: <span id="selectedYear">1800</span>
+        </label>
+    </div>
+<!-- Start and Pause Buttons -->
+<div id="button-container">
+    <button id="startButton">Start</button>
+    <button id="pauseButton" style="display: none;">Pause</button>
+</div>
+
+
+    <script>
+        var animationInterval; // Variable to hold the interval for animation
+
+        function startAnimation() {
+            document.getElementById("startButton").style.display = "none";
+            document.getElementById("pauseButton").style.display = "block";
+            document.getElementById("yearSlider").disabled = true;
+            animationInterval = setInterval(function () {
+                var currentValue = document.getElementById("yearSlider").value;
+                if (currentValue < 2022) {
+                    currentValue++;
+                    document.getElementById("yearSlider").value = currentValue;
+                    sliderChanged(currentValue);
+                } else {
+                    pauseAnimation();
+                }
+            }, 10000);
+        }
+        function pauseAnimation() {
+            document.getElementById("pauseButton").style.display = "none";
+            document.getElementById("startButton").style.display = "block";
+            document.getElementById("yearSlider").disabled = false;
+            clearInterval(animationInterval);
+        }
+
+        // Event listener for the start button
+        document.getElementById("startButton").addEventListener("click", function () {
+            startAnimation();
+        });
+
+        // Event listener for the pause button
+        document.getElementById("pauseButton").addEventListener("click", function () {
+            pauseAnimation();
+        });
+
+        function sliderChanged(value) {
+            // Update the map based on the selected year
+            document.getElementById("selectedYear").innerText = value;
+            var svg = d3.select("#map"),
+                width = 800,
+                height = 600;
+
+            svg.selectAll("*").remove();
+
+            var projection = d3.geoMercator()
+                .scale(120)
+                .center([0, 20])
+                .translate([width / 2, height / 2]);
+
+            d3.queue()
+                .defer(d3.json, "https://enjalot.github.io/wwsd/data/world/world-110m.geojson")
+                .await(ready);
+
+            function ready(error, topo) {
+                d3.csv("../static/data.csv", function (error, data) {
+                    if (error) {
+                        throw error;
+                    }
+                    var codeValueMap = {};
+                    var codeValuelistMap={};
+                    data.forEach(function (d) {
+                        if (d["unit"] == "CO2 * gigagram / a" && d["category (IPCC2006_PRIMAP)"] == "1.A") {
+                            var countryCode = d["area (ISO3)"];
+                                codeValueMap[countryCode] = +d[value];
+                                var list1=[];
+                                for (var i = 1800; i <= 2022; i++) {
+                                    list1.push(+d[i]);
+                                }
+                                codeValuelistMap[countryCode]=list1;
+                        }
+                    });
+                    var tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+                        function showTooltip(d) {
+                            tooltip.transition()
+                                .duration(200)
+                                .style("opacity", .9);
+                            tooltip.html(d.properties.name + ": " +  (codeValueMap[d.id] !== undefined ? codeValueMap[d.id] : 0) + " CO2 * gigagram / a")
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 28) + "px");
+                        
+                            // Draw scatter plot
+
+                        }
+                        
+
+                    function hideTooltip() {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0)
+
+                        // Remove scatter plot
+                    }
+                    var max = d3.max(Object.values(codeValueMap));
+                    var colorScale = d3.scaleThreshold()
+                        .domain([0, 1000, 10000, 20000,40000,1000000, max])
+                        .range(d3.schemeBlues[7]);
+
+                    svg.selectAll(".Country")
+                        .data(topo.features)
+                        .enter()
+                        .append("path")
+                        .attr("d", d3.geoPath().projection(projection))
+                        .style("stroke", "transparent")
+                        .attr("class", function (d) {
+                            return "Country"
+                        })
+                        .style("fill", function (d) {
+
+                            var countryCode = d['id'];
+                            var countryValue = codeValueMap[countryCode];
+                            return countryValue !== undefined ? colorScale(countryValue) : colorScale(0);
+                        })
+                        .on("mouseover", function (d) {
+                            d3.select(this).style("fill", "red");
+                            showTooltip(d)
+                        })
+                        .on("mouseout", function (d) {
+                            var countryCode = d['id'];
+                            var countryValue = codeValueMap[countryCode];
+                            d3.select(this).style("fill", countryValue !== undefined ? colorScale(countryValue) : colorScale(0));
+                            hideTooltip()
+
+                        })
+                        .style("opacity", 0.8);
+                });
+            }
+        }
+
+        sliderChanged(1800); // Call the function initially with the value 1800
+    </script>
+</body>
+
+</html>

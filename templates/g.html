@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Level Animation</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    #chart {
+      display: flex;
+      justify-content: space-between;
+    }
+    #bar-chart {
+      width: 45%;
+      height: 400px;
+    }
+    #scatter-plot {
+      width: 45%;
+      height: 400px;
+    }
+    #slider {
+      width: 600px;
+      margin-top: 20px;
+    }
+    .handle {
+      fill: red;
+    }
+    #infoBox {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #infoBox p {
+      margin: 0 0 10px;
+      line-height: 1.5;
+        }
+   </style>
+</head>
+
+  </style>
+</head>
+<body>
+
+  <h1>Sea level rise across the years</h1>
+  <div id="infoBox">
+
+  <p>
+    Sea level rise is an increase in the level of the world’s oceans due to the effects of global warming. Burning fossil fuels is one of the causes of global warming because it releases carbon dioxide and other heat-trapping gasses into the atmosphere. The oceans then absorb the majority of this heat. As water becomes warmer, it expands. This results in ocean levels rising worldwide.
+    Land-based ice, such as glaciers and ice sheets, is greatly affected by global warming, as well. These reserves of ice are located in places like Greenland and Antarctica. Typically, they experience melt during the warmer months of the year and the ice is replenished in colder months. With the average year-round global temperatures rising, however, ice caps and glaciers are experiencing a disproportionate amount of melting at an accelerated rate.
+</p>
+<p>
+    Sea level rise poses a serious threat to coastal life around the world. Consequences include increased intensity of storm surges, flooding, and damage to coastal areas. In many cases, this is where large population centers are located, in addition to fragile wildlife habitats. Predicting how high the sea levels will rise is difficult. However, it is an issue that must be carefully monitored so coastal areas can be prepared for the consequences.
+</p>
+</div>
+<div id="chart">
+  <div id="bar-chart"></div>
+  <div id="scatter-plot"></div>
+</div>
+<div>
+    <label>
+        <input type="range" min="1880" max="2013" value="1880" step="1" id="yearSlider">
+        Year: <span id="currentYear">1880</span>
+    </label>
+</div>
+<button id="playButton">Play</button>
+<button id="pauseButton">Pause</button>
+<button id="toggleColorButton">Toggle Color</button>
+
+<script>
+  // Sample data for water level
+  function ready(error, topo) {
+
+    d3.csv("../static/output.csv")
+    .then(function(sea_level_data) {
+      console.log(sea_level_data[0]);
+  
+
+    // Assuming sea_level_data is already loaded as a JavaScript object
+    
+    // Extract July sea level data for each year and calculate relative sea levels
+    var initialSeaLevel = parseFloat(sea_level_data[0]['GMSL']); // Assuming the first entry is for the initial sea level
+    console.log(initialSeaLevel);
+
+    sea_level_data.forEach(entry => {
+      entry.Relative_GMSL = entry.GMSL - initialSeaLevel; // Calculating relative sea level
+    });
+
+    
+    // Extract years and relative sea levels
+    const YEARS = sea_level_data.map(entry => parseInt(entry.Time.substring(0, 4))); // Extracting years
+    const RELATIVE_GMSL = sea_level_data.map(entry => entry.Relative_GMSL); // Extracting relative sea levels
+    console.log(RELATIVE_GMSL);
+    var minvalue=d3.min(RELATIVE_GMSL);
+    var data = [];
+for (var i = 0; i < YEARS.length; i++) {
+    var obj = {}; // Create a new object for each iteration
+    obj.year = YEARS[i]; // Add the year property to the object
+    obj.level = RELATIVE_GMSL[i]-minvalue; // Add the relative sea level property to the object
+    data.push(obj); // Push the object to the data array
+}
+console.log(data);
+
+
+  
+  console.log(data);
+
+  var sliderValue = 1880;
+  var intervalId;
+  var playing = false;
+  var barHeight = 1000; // Initial bar height
+  var barWidth = 500;
+  // Create SVG for bar chart
+  var svg = d3.select("#bar-chart")
+    .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", "0 0 600 400");
+
+  // Create initial water level bar
+  var bar = svg.append("rect")
+  .attr("x", (600 - barWidth) / 2) // Center the bar horizontally
+  .attr("y", 300 - barHeight)
+  .attr("width", barWidth)
+  .attr("height", barHeight)
+  .attr("fill", "blue")
+
+
+// Create red line to mark initial value
+var initialValue = data[0].level;
+var initialLine = svg.append("line")
+  .attr("x1", (600 - barWidth) / 2)
+  .attr("y1", 300 - initialValue)
+  .attr("x2", (600 + barWidth) / 2)
+  .attr("y2", 300 - initialValue)
+  .attr("stroke", "red")
+  .attr("stroke-width", 2)
+
+
+// Create tooltip
+
+
+  // Create scatter plot
+  var maxLevel = d3.max(data, function(d) {
+    return d.level;
+});
+  var scatterLayout = {
+    title: 'Water Level Scatter Plot',
+    xaxis: {
+      title: 'Year',
+      range: [data[0].year, data[data.length-1].year]
+    },
+    yaxis: {
+      title: 'Water Level',
+      range: [0,maxLevel]
+    }
+  };
+  var scatterData = [{
+    x: [data[0].year],
+    y: [0],
+    mode: 'markers',
+    type: 'scatter'
+  }];
+  var outline = svg.append("rect")
+    .attr("x", (600 - barWidth) / 2)
+    .attr("y", 300 - barHeight)
+    .attr("width", barWidth)
+    .attr("height", barHeight)
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("stroke-width", 1);
+
+  var scatterPlot = Plotly.newPlot('scatter-plot', scatterData, scatterLayout);
+
+  // Create slider
+  var slider = d3.select("#yearSlider")
+    .on("input", function() {
+      var selectedYear = +this.value;
+      var selectedData = data.find(d => d.year === selectedYear);
+      animateWaterLevel(selectedData.level);
+      d3.select("#currentYear").text(selectedYear);
+      sliderValue = selectedYear;
+      var newscatterData = [{
+        x: [],
+        y: [],
+        mode: 'markers',
+        type: 'scatter'
+      }];
+      
+      for (var i = 1880; i <= selectedYear; i++) {
+        newscatterData[0].x.push(i);
+        newscatterData[0].y.push((data.find(d => d.year === i)).level);
+      }
+      
+      console.log(newscatterData);
+      Plotly.react('scatter-plot', newscatterData, scatterLayout);
+    });
+
+  // Add play button functionality
+  d3.select("#playButton").on("click", function() {
+    if (!playing) {
+      intervalId = setInterval(function() {
+        if (sliderValue < 2013) {
+          sliderValue++;
+          slider.property("value", sliderValue);
+          var selectedData = data.find(d => d.year === sliderValue);
+          animateWaterLevel(selectedData.level);
+          d3.select("#currentYear").text(sliderValue);
+          updateScatterPlot(selectedData.year, selectedData.level);
+        } else {
+          clearInterval(intervalId);
+          playing = false;
+          slider.attr("disabled", null);
+          d3.select("#pauseButton").attr("disabled", "disabled");
+          d3.select("#playButton").attr("disabled", null);
+        }
+      }, 1000);
+      playing = true;
+      slider.attr("disabled", "disabled");
+      d3.select("#pauseButton").attr("disabled", null);
+      d3.select("#playButton").attr("disabled", "disabled");
+    }
+  });
+
+  // Add pause button functionality
+  d3.select("#pauseButton").on("click", function() {
+    clearInterval(intervalId);
+    playing = false;
+    slider.attr("disabled", null);
+    d3.select("#pauseButton").attr("disabled", "disabled");
+    d3.select("#playButton").attr("disabled", null);
+  });
+
+  function animateWaterLevel(level) {
+    bar.transition()
+      .duration(1000)
+      .attr("height", level)
+      .attr("y", 300 - level);
+
+  }
+
+  // Update scatter plot with new data point
+  function updateScatterPlot(year, level) {
+    Plotly.extendTraces('scatter-plot', { x: [[year]], y: [[level]] }, [0]);
+  }
+  var isBlack=false;
+  // Initial animation
+  animateWaterLevel(data[0].level);
+  d3.select("#currentYear").text(sliderValue);
+  d3.select("#toggleColorButton").on("click", function() {
+    isBlack = !isBlack;
+    if (isBlack) {
+      scatterLayout.plot_bgcolor = 'gray';
+      scatterLayout.xaxis.linecolor = 'black'; // Adjust the x-axis color
+      scatterLayout.yaxis.linecolor = 'black'; // Adjust the y-axis color
+    } else {
+      scatterLayout.paper_bgcolor = 'rgba(0,0,0,0)';
+      scatterLayout.plot_bgcolor = 'rgba(0,0,0,0)';
+      scatterLayout.xaxis.linecolor = 'black'; // Adjust the x-axis color
+      scatterLayout.yaxis.linecolor = 'black'; // Adjust the y-axis color
+    }
+    Plotly.relayout('scatter-plot', scatterLayout);
+  });
+})
+.catch(function(error) {
+  throw error;
+});
+  }
+  ready();
+
+</script>
+
+</body>
+</html>

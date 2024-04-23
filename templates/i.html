@@ -23,13 +23,10 @@
 	<div class="header_content">
         <h2>Data Visualisation S'24</h2>
         <h1>Climate Change</h1>
-        <form method="POST" action="{{ url_for('watch_temperature_video') }}">
-			<input type="hidden" name="video_url" value="temp.html">
-			<button type="submit">Watch Temperature Video</button>
-		</form>
+
 		<form id="seaLevelForm" method="POST" action="{{ url_for('watch_sea_level_video') }}">
 			<input type="hidden" name="video_url" value="sea_level.html">
-			<button type="submit">Watch Sea Level Rise Video</button>
+			<button type="submit">Sea Level Rise</button>
 		</form>
 		<form id="watchChartForm" action="/render_chart_html" method="POST">
 			<input type="hidden" name="template_name" value="chart.html">
@@ -43,9 +40,21 @@
 			<input type="hidden" name="video_url" value="heat.html">
 			<button type="submit">Heat Map</button>
 		</form>
-		<form id="india-area" method="POST" action="/india-area">
-			<input type="hidden" name="template_name" value="hello.html">
-			<button type="submit">Area Map For India</button>
+		<form id="india-area" method="POST" action="/bar-race">
+			<input type="hidden" name="template_name" value="bar-race.html">
+			<button type="submit">Bar-race for climate change disaster</button>
+		</form>
+		<form id="sun-burst" method="POST" action="/sunburst">
+			<input type="hidden" name="template_name" value="sunburst.html">
+			<button type="submit">Per capita primary fuel consumption sunburst</button>
+		</form>
+		<form id="bubble" method="POST" action="/bubble">
+		<input type="hidden" name="template_name" value="k.html">
+			<button type="submit">Bubble chart to compare different states</button>
+		</form>
+		<form id="temp" method="POST" action="/temp">
+			<input type="hidden" name="template_name" value="j.html">
+				<button type="submit">Temperature and Rainfall for India</button>
 		</form>
     </div>
 </header>
