@@ -6,7 +6,6 @@ import math  # Importing math library for mathematical operations
 from flask import Flask, render_template  # Importing Flask and render_template (redundant line)
 import pandas as pd  # Importing pandas (redundant line)
 import plotly.graph_objs as go  # Importing Plotly's graph objects (redundant line)
-
 app = Flask(__name__)  # Creating a Flask application instance
 
 # Function to create plot
